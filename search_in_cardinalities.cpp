@@ -93,7 +93,7 @@ find_by_offset_create_offsets_linear_avx2(benchmark::State &state)
 			if (mask == 0) {
 				i += 4;
 			} else {
-				i += __builtin_clz(mask) - 1;
+				i += __builtin_ctz(mask);
 				break;
 			}
 		}
