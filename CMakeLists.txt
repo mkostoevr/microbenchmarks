@@ -15,6 +15,10 @@ ADD_EXECUTABLE(search_in_cardinalities search_in_cardinalities.cpp)
 TARGET_LINK_LIBRARIES(search_in_cardinalities benchmark::benchmark)
 target_compile_options(search_in_cardinalities PRIVATE -mavx2 -falign-loops=64)
 
+ADD_EXECUTABLE(search_in_sorted_array search_in_sorted_array.cpp)
+TARGET_LINK_LIBRARIES(search_in_sorted_array benchmark::benchmark)
+target_compile_options(search_in_sorted_array PRIVATE -mavx512f -falign-loops=64)
+
 ADD_EXECUTABLE(hsum hsum.cpp)
 TARGET_LINK_LIBRARIES(hsum benchmark::benchmark)
 target_compile_options(hsum PRIVATE -mavx2 -falign-loops=64)
