@@ -11,9 +11,9 @@ add_subdirectory(third_party/benchmark)
 
 ADD_COMPILE_OPTIONS(-Wall -Wextra -Wpedantic -Werror)
 
-ADD_EXECUTABLE(find_by_offset find_by_offset.cpp)
-TARGET_LINK_LIBRARIES(find_by_offset benchmark::benchmark)
-target_compile_options(find_by_offset PRIVATE -mavx2 -falign-loops=64)
+ADD_EXECUTABLE(search_in_cardinalities search_in_cardinalities.cpp)
+TARGET_LINK_LIBRARIES(search_in_cardinalities benchmark::benchmark)
+target_compile_options(search_in_cardinalities PRIVATE -mavx2 -falign-loops=64)
 
 ADD_EXECUTABLE(hsum hsum.cpp)
 TARGET_LINK_LIBRARIES(hsum benchmark::benchmark)
