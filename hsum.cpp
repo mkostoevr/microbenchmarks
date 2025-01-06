@@ -3,6 +3,15 @@
 
 #include <benchmark/benchmark.h>
 
+static void __attribute__((noinline))
+warmup(benchmark::State &state)
+{
+	int i = 0;
+	for (auto _ : state)
+		benchmark::DoNotOptimize(i++);
+}
+
+BENCHMARK(warmup);
 
 static void __attribute__((noinline))
 hsum_f32x4_sse1(benchmark::State &state)

@@ -34,6 +34,16 @@ init_dataset(std::vector<uint64_t> &values, std::minstd_rand &rng)
 /* Benchmarks. */
 
 static void __attribute__((noinline))
+warmup(benchmark::State &state)
+{
+	int i = 0;
+	for (auto _ : state)
+		benchmark::DoNotOptimize(i++);
+}
+
+BENCHMARK(warmup);
+
+static void __attribute__((noinline))
 upper_bound_linear(benchmark::State &state)
 {
 	size_t count = 64;

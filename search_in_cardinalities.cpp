@@ -17,6 +17,16 @@ cmpgt64x4(uint64_t *x_ptr, __m256i y_vec)
 /* Benchmarks. */
 
 static void __attribute__((noinline))
+warmup(benchmark::State &state)
+{
+	int i = 0;
+	for (auto _ : state)
+		benchmark::DoNotOptimize(i++);
+}
+
+BENCHMARK(warmup);
+
+static void __attribute__((noinline))
 find_by_offset_linear(benchmark::State &state)
 {
 	size_t count = 64;
