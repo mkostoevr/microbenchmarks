@@ -7,6 +7,14 @@
 /* Utilities. */
 
 static inline uint64_t
+cmpgt64x2(uint64_t *x_ptr, __m128i y_vec)
+{
+	__m128i x_vec = _mm_loadu_si128((__m128i *)x_ptr);
+	__m128i mask = _mm_cmpgt_epi64(x_vec, y_vec);
+	return _mm_movemask_ps((__m128)mask);
+}
+
+static inline uint64_t
 cmpgt64x4(uint64_t *x_ptr, __m256i y_vec)
 {
 	__m256i x_vec = _mm256_loadu_si256((__m256i *)x_ptr);
@@ -62,6 +70,31 @@ upper_bound_linear(benchmark::State &state)
 }
 
 BENCHMARK(upper_bound_linear);
+
+static void __attribute__((noinline))
+upper_bound_linear_sse4_2(benchmark::State &state)
+{
+	size_t count = 64;
+	std::minstd_rand rng;
+	std::vector<uint64_t> values(count);
+	init_dataset(values, rng);
+	for (auto _ : state) {
+		__m128i value = _mm_set1_epi64x(rng());
+		size_t i = 0;
+		while (i < count) {
+			uint64_t mask = cmpgt64x2(&values[i], value);
+			if (mask == 0) {
+				i += 2;
+			} else {
+				i += __builtin_ctz(mask);
+				break;
+			}
+		}
+		benchmark::DoNotOptimize(i);
+	}
+}
+
+BENCHMARK(upper_bound_linear_sse4_2);
 
 static void __attribute__((noinline))
 upper_bound_linear_avx2(benchmark::State &state)
