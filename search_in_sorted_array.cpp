@@ -4,6 +4,10 @@
 
 #include <benchmark/benchmark.h>
 
+#ifndef COUNT
+#define COUNT 64
+#endif
+
 /* Utilities. */
 
 static inline uint64_t
@@ -54,7 +58,7 @@ BENCHMARK(warmup);
 static void __attribute__((noinline))
 upper_bound_linear(benchmark::State &state)
 {
-	size_t count = 64;
+	size_t count = COUNT;
 	std::minstd_rand rng;
 	std::vector<uint64_t> values(count);
 	init_dataset(values, rng);
@@ -74,7 +78,7 @@ BENCHMARK(upper_bound_linear);
 static void __attribute__((noinline))
 upper_bound_linear_sse4_2(benchmark::State &state)
 {
-	size_t count = 64;
+	size_t count = COUNT;
 	std::minstd_rand rng;
 	std::vector<uint64_t> values(count);
 	init_dataset(values, rng);
@@ -99,7 +103,7 @@ BENCHMARK(upper_bound_linear_sse4_2);
 static void __attribute__((noinline))
 upper_bound_linear_avx2(benchmark::State &state)
 {
-	size_t count = 64;
+	size_t count = COUNT;
 	std::minstd_rand rng;
 	std::vector<uint64_t> values(count);
 	init_dataset(values, rng);
@@ -124,7 +128,7 @@ BENCHMARK(upper_bound_linear_avx2);
 static void __attribute__((noinline))
 upper_bound_linear_avx512(benchmark::State &state)
 {
-	size_t count = 64;
+	size_t count = COUNT;
 	std::minstd_rand rng;
 	std::vector<uint64_t> values(count);
 	init_dataset(values, rng);
