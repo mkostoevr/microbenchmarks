@@ -66,8 +66,9 @@ upper_bound_linear(benchmark::State &state)
 		uint64_t value = rng();
 		size_t i = 0;
 		while (i < count) {
-			if (values[i++] > value)
+			if (values[i] > value)
 				break;
+			i++;
 		}
 		benchmark::DoNotOptimize(i);
 	}
