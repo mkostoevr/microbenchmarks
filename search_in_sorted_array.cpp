@@ -56,6 +56,31 @@ warmup(benchmark::State &state)
 BENCHMARK(warmup);
 
 static void __attribute__((noinline))
+upper_bound_binary(benchmark::State &state)
+{
+	size_t count = COUNT;
+	std::minstd_rand rng;
+	std::vector<uint64_t> values(count);
+	init_dataset(values, rng);
+	for (auto _ : state) {
+		uint64_t value = rng();
+		uint64_t *begin = &values[0];
+		uint64_t *end = &values[count];
+		while (begin != end) {
+			uint64_t *mid = begin + (end - begin) / 2;
+			if (*mid > value) {
+				end = mid;
+			} else {
+				begin = mid + 1;
+			}
+		}
+		benchmark::DoNotOptimize(begin - &values[0]);
+	}
+}
+
+BENCHMARK(upper_bound_binary);
+
+static void __attribute__((noinline))
 upper_bound_linear(benchmark::State &state)
 {
 	size_t count = COUNT;
