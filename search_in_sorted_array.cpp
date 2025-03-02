@@ -102,6 +102,42 @@ upper_bound_linear(benchmark::State &state)
 BENCHMARK(upper_bound_linear);
 
 static void __attribute__((noinline))
+upper_bound_linear_heuristical(benchmark::State &state)
+{
+	size_t count = COUNT;
+	std::minstd_rand rng;
+	std::vector<uint64_t> values(count);
+	init_dataset(values, rng);
+	for (auto _ : state) {
+		uint64_t value = rng();
+		uint64_t first = values[0];
+		uint64_t last = values[count - 1];
+		if (first > value)
+			continue; /* i = 0 */
+		if (value >= last)
+			continue; /* i = count */
+		/* Guess the i to start. */
+		size_t i = ((double)(value - first) /
+			    (double)(last - first)) * count;
+		if (values[i] <= value) {
+			while (i < count) {
+				if (values[++i] > value)
+					break;
+			}
+		} else {
+			while (i > 0) {
+				if (values[i - 1] <= value)
+					break;
+				i--;
+			}
+		}
+		benchmark::DoNotOptimize(i);
+	}
+}
+
+BENCHMARK(upper_bound_linear_heuristical);
+
+static void __attribute__((noinline))
 upper_bound_linear_sse4_2(benchmark::State &state)
 {
 	size_t count = COUNT;
