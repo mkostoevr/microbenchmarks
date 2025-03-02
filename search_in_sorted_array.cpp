@@ -15,7 +15,7 @@ cmpgt64x2(uint64_t *x_ptr, __m128i y_vec)
 {
 	__m128i x_vec = _mm_loadu_si128((__m128i *)x_ptr);
 	__m128i mask = _mm_cmpgt_epi64(x_vec, y_vec);
-	return _mm_movemask_ps((__m128)mask);
+	return _mm_movemask_pd((__m128d)mask);
 }
 
 static inline uint64_t
@@ -23,7 +23,7 @@ cmpgt64x4(uint64_t *x_ptr, __m256i y_vec)
 {
 	__m256i x_vec = _mm256_loadu_si256((__m256i *)x_ptr);
 	__m256i mask = _mm256_cmpgt_epi64(x_vec, y_vec);
-	return _mm256_movemask_ps((__m256)mask);
+	return _mm256_movemask_pd((__m256d)mask);
 }
 
 static inline uint64_t
